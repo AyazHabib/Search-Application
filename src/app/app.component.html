@@ -1,0 +1,49 @@
+<div class="search__container">
+  <p class="search__title">
+      Go ahead, hover over search
+  </p>
+  <input class="search__input" type="text" placeholder="Search" (input)="onInputChange($event?.target?.value)" />
+</div>
+
+<div class="center" *ngIf="searching"><img class="loader" src="assets/images/loader.gif" /></div>   
+
+<div class="center" *ngIf="!searching && resultSet?.total_count === 0">
+  <h2>No Records Found</h2>
+</div>   
+
+<div id="Modal" class="search-modal" *ngIf="resultSet?.total_count > 0">
+  <div class="search-modal-header">
+    <span class="icon">&#8645;</span>
+    <div *ngFor="let list of sortList; let i = index" (click)="sortData(list)">
+      <a class="sort-col"><span class="icon" *ngIf="list?.asc">&#8657;</span>
+      <span class="sort-view">{{list?.value}}</span><span class="icon" *ngIf="list?.desc">&#8659;</span></a>
+    </div>
+  </div>
+  <div class="search-modal-body"> 
+    <div class="message" *ngFor="let item of resultSet?.items" (click)="navigate(item?.owner?.html_url)">
+      <div class="message-avatar">
+        <img [src]="item?.owner?.avatar_url" alt="Profile picture" />
+      </div>
+      <div class="message-body">
+        <h5 class="head-col">{{item?.name}}</h5>
+        <p>{{item?.description}}</p>
+        <div *ngIf="item?.license?.name">
+          <span class="col-feat">License Information:<small>{{item?.license?.name}}</small></span>
+        </div>
+        <div>
+          <span class="col-feat">Size: <small>{{item?.size}}</small></span>
+          <span class="col-feat mid-col-one">Forks: <small>{{item?.forks}}</small></span>
+          <span class="col-feat mid-col-one">Watchers: <small>{{item?.watchers}}</small></span>
+        </div>
+        <div>
+          <span class="col-feat">Created At: <small>{{item?.created_at | date: 'dd/MM/yyyy'}}</small></span>
+        </div>
+        <div>
+          <span class="col-feat">Updated At: <small>{{item?.updated_at | date: 'dd/MM/yyyy'}}</small></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
